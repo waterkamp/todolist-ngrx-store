@@ -1,0 +1,42 @@
+
+<div fxLayout="row" class="todos" fxFlexFill fxLayoutAlign="center center">
+  <div fxFlex="50%">
+    <div *ngIf="!isDetailView">
+      <form #todoForm="ngForm"  (ngSubmit)="addTodo(); todoForm.resetForm();">
+        <mat-form-field appearance="standard">
+          <mat-label>Todo name</mat-label>
+          <input required minlength="4" name="todoName" [(ngModel)]="todoName" matInput placeholder="Todo name" #tbxTodoName="ngModel">
+          <mat-error *ngIf="tbxTodoName.errors?.required">Please enter a name for the todo</mat-error>
+          <mat-error *ngIf="tbxTodoName.errors?.minlength">Please at least four characters.</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="todos__btnAdd" [disabled]="!todoForm.valid">Add todo</button>
+
+        <button [disabled]="editMode" type="button" class="todos__menu-icon" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button type="button" mat-menu-item (click)="editMode = true">
+            <mat-icon>delete</mat-icon>
+            <span>Delete todo`s</span>
+          </button>
+        </mat-menu>
+      </form>
+      <mat-divider></mat-divider>
+      <div class="todos__list">
+        <mat-list>
+          <mat-list-item *ngFor="let todo of todos">
+            <div class="todos__item-content" (click)="showTodoDetail(todo)">
+              <mat-icon [style.color]="todo.completed ? 'green' : 'red'"  class="todos__icon" matListIcon>{{todo.completed ? 'check_circle' : 'error'}}</mat-icon>
+              <span class="todos__name">{{todo.name}}</span>
+              <mat-checkbox *ngIf="editMode" class="todos__checkbox" (change)="onTodoCheck($event)" [id]="todo.id.toString()"></mat-checkbox>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+    <div *ngIf="isDetailView">
+      {{selectedTodo?.name}}
+    </div>
+  </div>
+</div>
