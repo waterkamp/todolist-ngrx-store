@@ -14,7 +14,7 @@ export class TodoEffects {
     ofType(todoActions.loadAll),
     mergeMap(() => this.todosService.getAll()
       .pipe(
-        map(todos => ({ type: todoActions.successfullyLoaded.type, payload: todos })),
+        map(todos => todoActions.successfullyLoaded({todos})),
         catchError(() => EMPTY)
       ))
     )

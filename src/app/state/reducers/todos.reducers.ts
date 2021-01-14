@@ -6,5 +6,5 @@ export const initialState: Todo[] = [];
 
 export const todosReducer = createReducer(
   initialState,
-  on(todoActions.loadAll, state => [...state]),
+  on(todoActions.successfullyLoaded, (state, {todos}) => [...todos]),
 );

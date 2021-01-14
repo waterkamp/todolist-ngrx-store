@@ -16,6 +16,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { EffectsModule } from '@ngrx/effects';
+import { TodoEffects } from './state/effects/todos.effects';
+import { StoreModule } from '@ngrx/store';
+import { todosReducer } from './state/reducers/todos.reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -40,7 +46,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatListModule,
     MatDividerModule,
     MatMenuModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    StoreModule.forRoot({todos: todosReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
+    EffectsModule.forRoot([TodoEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
