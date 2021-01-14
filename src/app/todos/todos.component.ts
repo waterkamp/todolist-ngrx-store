@@ -10,15 +10,14 @@ import { Todo } from './../models/todo';
 })
 export class TodosComponent implements OnInit {
 
-  editMode = false;
+  selectingMode = false;
   isDetailView = false;
 
   todoName: string = '';
+  todoDescription: string = '';
   selectedTodo?: Todo;
-  todos: Todo[] = [
-    {id: 1, name: 'my first todo', completed: false},
-    {id: 2, name: 'my second todo', completed: false}
-  ];
+  selectedTodoIds: number[] = [];
+  todos: Todo[] = [];
 
   constructor() { }
 
@@ -29,13 +28,30 @@ export class TodosComponent implements OnInit {
     this.todos.push({id: this.todos.length + 1, completed: false, name: this.todoName});
   }
 
+  deleteSelectedTodos() {
+    this.selectedTodoIds.forEach(id => {
+      this.todos = this.todos.filter(t => t.id !== id);
+    });
+
+    this.selectingMode = false;
+  }
+
+
+
   onTodoCheck(event: MatCheckboxChange) {
     console.log(event.source.id);
     console.log(event.source.checked);
+
+    if (event.source.checked) {
+      this.selectedTodoIds.push(parseInt(event.source.id));
+    } else {
+      this.selectedTodoIds = this.selectedTodoIds.filter(id => id !== parseInt(event.source.id));
+    }
   }
 
   showTodoDetail(todo: Todo) {
-    this.selectedTodo = todo;
+    if (this.selectingMode) { return; }
     this.isDetailView = true;
+    this.selectedTodo = todo;
   }
 }

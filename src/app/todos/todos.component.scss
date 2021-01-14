@@ -15,11 +15,11 @@
 }
 
 .todos__icon {
-  vertical-align: middle;
+  vertical-align:top;
 }
 
 .todos__name {
-  display: inline-block;
+  // display: inline-block;
   margin-left: 20px;
 }
 
@@ -27,7 +27,24 @@
   float: right;
 }
 
-.todos__item-content {
+.todos__item {
   width: 100%;
   cursor: pointer;
+}
+
+.todos__item-content {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.todos__details-button-list {
+  margin-top: 30px;
+}
+
+.todos__update-button{
+  margin-left: 10px;
+}
+
+.todos__delete-button {
+  float: right;
 }
