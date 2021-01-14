@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatSelectionListChange } from '@angular/material/list';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from '../state/app.state';
 import { Todo } from './../models/todo';
+import * as selectors from './../state/selectors/todos.selectors';
+import * as todoActions from './../state/actions/todos.actions';
 
 @Component({
   selector: 'app-todos',
@@ -10,6 +14,8 @@ import { Todo } from './../models/todo';
 })
 export class TodosComponent implements OnInit {
 
+  todos$: Observable<Todo[]> = this.store.select(selectors.selectTodos);
+
   selectingMode = false;
   isDetailView = false;
 
@@ -17,20 +23,20 @@ export class TodosComponent implements OnInit {
   todoDescription: string = '';
   selectedTodo?: Todo;
   selectedTodoIds: number[] = [];
-  todos: Todo[] = [];
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.store.dispatch(todoActions.loadAll());
   }
 
   addTodo() {
-    this.todos.push({id: this.todos.length + 1, completed: false, name: this.todoName});
+    // this.todos.push({id: this.todos.length + 1, completed: false, name: this.todoName});
   }
 
   deleteSelectedTodos() {
     this.selectedTodoIds.forEach(id => {
-      this.todos = this.todos.filter(t => t.id !== id);
+      // this.todos = this.todos.filter(t => t.id !== id);
     });
 
     this.selectingMode = false;

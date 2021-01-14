@@ -1,8 +1,9 @@
 # About this application
 
-This application has been created to show how to use the Angular Material Components library togehter with Angular.
-But since the Angular Material Components are not responsive by design, I used the Angular Flex-Layout package to
-make the application responsive.
+This application has been created to show how to implemenet a global state management for Angular.
+The application is using NgRx package to achieve this.
+NgRx is an Angular implementation of the redux pattern.
+
 
 ## How to run the application
 
@@ -11,5 +12,5 @@ make the application responsive.
 3. Run `ng serve` 
 
 ## Links to useful resources
-- [Angular Material](https://material.angular.io/)
-- [Angular Flex-Layout](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview)
+- [NgRx.io](https://ngrx.io/)
+- [Redux](https://redux.js.org/)
