@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="isDetailView && selectedTodo">
+    <div *ngIf="isDetailView && (getSelectedTodo$ | async) as selectedTodo">
       <form #detailForm="ngForm">
         <div>
           <mat-form-field appearance="outline">
@@ -62,7 +62,7 @@
         </div>
         <div class="todos__details-button-list">
           <button mat-raised-button (click)="isDetailView = false" *ngIf="detailForm.pristine">Back</button>
-          <button type="button" (click)="isDetailView = false" class="todos__update-button" mat-raised-button color="primary" [disabled]="!detailForm.valid || detailForm.pristine">Update</button>
+          <button type="button" (click)="update(selectedTodo)" class="todos__update-button" mat-raised-button color="primary" [disabled]="!detailForm.valid || detailForm.pristine">Update</button>
         </div>
       </form>
     </div>

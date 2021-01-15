@@ -6,6 +6,7 @@ import { AppState } from '../state/app.state';
 import { Todo } from './../models/todo';
 import * as selectors from './../state/selectors/todos.selectors';
 import * as todoActions from './../state/actions/todos.actions';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todos',
@@ -14,40 +15,43 @@ import * as todoActions from './../state/actions/todos.actions';
 })
 export class TodosComponent implements OnInit {
 
-  todos$: Observable<Todo[]> = this.store.select(selectors.selectTodos);
+  todos$: Observable<Todo[]> = this.store.select(selectors.selectTodoList);
+  getSelectedTodo$: Observable<Todo | undefined>;
 
   selectingMode = false;
   isDetailView = false;
 
   todoName: string = '';
   todoDescription: string = '';
-  selectedTodo?: Todo;
   selectedTodoIds: number[] = [];
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) {
+    this.getSelectedTodo$ = this.store.select(selectors.getSelectedTodo).pipe(map(todo => {
+      if (!todo) return undefined;
+      return {...todo};
+    }));
+  }
 
   ngOnInit(): void {
     this.store.dispatch(todoActions.loadAll());
   }
 
   addTodo() {
-    // this.todos.push({id: this.todos.length + 1, completed: false, name: this.todoName});
+    this.store.dispatch(todoActions.addTodo({name: this.todoName}));
+  }
+
+  update(selectedTodo: Todo) {
+    this.store.dispatch(todoActions.updateTodo({todo: selectedTodo}));
+    this.isDetailView = false;
   }
 
   deleteSelectedTodos() {
-    this.selectedTodoIds.forEach(id => {
-      // this.todos = this.todos.filter(t => t.id !== id);
-    });
-
     this.selectingMode = false;
+    this.store.dispatch(todoActions.deleteTodo({ids: this.selectedTodoIds}));
+    this.selectedTodoIds = [];
   }
 
-
-
   onTodoCheck(event: MatCheckboxChange) {
-    console.log(event.source.id);
-    console.log(event.source.checked);
-
     if (event.source.checked) {
       this.selectedTodoIds.push(parseInt(event.source.id));
     } else {
@@ -58,6 +62,6 @@ export class TodosComponent implements OnInit {
   showTodoDetail(todo: Todo) {
     if (this.selectingMode) { return; }
     this.isDetailView = true;
-    this.selectedTodo = todo;
+    this.store.dispatch(todoActions.selectTodo({id: todo.id}));
   }
 }
