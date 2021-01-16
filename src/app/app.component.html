@@ -1,1 +1,19 @@
-<app-todos></app-todos>
+  <mat-toolbar>
+    <span>Personal Manager</span>
+    <div>
+      <button [matMenuTriggerFor]="mainMenu" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #mainMenu="matMenu">
+        <button type="button" mat-menu-item>
+          <span>Time management</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+  <div class="container" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="50%">
+      <app-todos></app-todos>
+    </div>
+  </div>
+

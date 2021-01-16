@@ -1,70 +1,70 @@
 
-<div fxLayout="row" class="todos" fxFlexFill fxLayoutAlign="center center">
-  <div fxFlex="50%">
-    <div *ngIf="!isDetailView">
-      <form #todoForm="ngForm"  (ngSubmit)="addTodo(); todoForm.resetForm();">
+<div class="tdos">
+  <h1>Todos management</h1>
+  <div *ngIf="!isDetailView">
+    <form #todoForm="ngForm"  (ngSubmit)="addTodo(); todoForm.resetForm();">
+      <mat-form-field appearance="outline">
+        <mat-label>Todo name</mat-label>
+        <input required minlength="4" name="todoName" [(ngModel)]="todoName" matInput placeholder="Todo name" #tbxTodoName="ngModel">
+        <mat-error *ngIf="tbxTodoName.errors?.required">Please enter a name for the todo</mat-error>
+        <mat-error *ngIf="tbxTodoName.errors?.minlength">Please at least four characters.</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="todos__btnAdd" [disabled]="!todoForm.valid">Add todo</button>
+
+      <button [disabled]="selectingMode" type="button" class="todos__menu-icon" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button type="button" mat-menu-item (click)="selectingMode = true">
+          <mat-icon>rule</mat-icon>
+          <span>Select todo's</span>
+        </button>
+      </mat-menu>
+    </form>
+    <mat-divider></mat-divider>
+    <div class="todos__list">
+      <mat-list>
+        <mat-list-item *ngFor="let todo of todos$ | async">
+          <div class="todos__item" (click)="showTodoDetail(todo)">
+            <mat-icon [style.color]="todo.completed ? 'green' : 'red'"  class="todos__icon" matListIcon>{{todo.completed ? 'check_circle' : 'error'}}</mat-icon>
+            <div class="todos__item-content">
+              <span class="mat-body-strong">{{todo.name}}</span>
+              <p class="mat-small">{{todo.description}}</p>
+            </div>
+            <mat-checkbox *ngIf="selectingMode" class="todos__checkbox" (change)="onTodoCheck($event);" [id]="todo.id.toString()"></mat-checkbox>
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <div class="todos__button-list" *ngIf="selectingMode">
+        <button type="button" (click)="deleteSelectedTodos()" class="todos__delete-button" mat-raised-button color="warn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isDetailView && (getSelectedTodo$ | async) as selectedTodo">
+    <form #detailForm="ngForm">
+      <div>
         <mat-form-field appearance="outline">
           <mat-label>Todo name</mat-label>
-          <input required minlength="4" name="todoName" [(ngModel)]="todoName" matInput placeholder="Todo name" #tbxTodoName="ngModel">
+          <input required minlength="4" name="todoName" [(ngModel)]="selectedTodo.name" matInput placeholder="Todo name" #tbxTodoName="ngModel" [value]="selectedTodo.name">
           <mat-error *ngIf="tbxTodoName.errors?.required">Please enter a name for the todo</mat-error>
           <mat-error *ngIf="tbxTodoName.errors?.minlength">Please at least four characters.</mat-error>
         </mat-form-field>
-
-        <button mat-raised-button color="primary" type="submit" class="todos__btnAdd" [disabled]="!todoForm.valid">Add todo</button>
-
-        <button [disabled]="selectingMode" type="button" class="todos__menu-icon" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button type="button" mat-menu-item (click)="selectingMode = true">
-            <mat-icon>rule</mat-icon>
-            <span>Select todo's</span>
-          </button>
-        </mat-menu>
-      </form>
-      <mat-divider></mat-divider>
-      <div class="todos__list">
-        <mat-list>
-          <mat-list-item *ngFor="let todo of todos$ | async">
-            <div class="todos__item" (click)="showTodoDetail(todo)">
-              <mat-icon [style.color]="todo.completed ? 'green' : 'red'"  class="todos__icon" matListIcon>{{todo.completed ? 'check_circle' : 'error'}}</mat-icon>
-              <div class="todos__item-content">
-                <span class="mat-body-strong">{{todo.name}}</span>
-                <p class="mat-small">{{todo.description}}</p>
-              </div>
-              <mat-checkbox *ngIf="selectingMode" class="todos__checkbox" (change)="onTodoCheck($event);" [id]="todo.id.toString()"></mat-checkbox>
-            </div>
-          </mat-list-item>
-        </mat-list>
-        <div class="todos__button-list" *ngIf="selectingMode">
-          <button type="button" (click)="deleteSelectedTodos()" class="todos__delete-button" mat-raised-button color="warn">Delete</button>
-        </div>
       </div>
-    </div>
-    <div *ngIf="isDetailView && (getSelectedTodo$ | async) as selectedTodo">
-      <form #detailForm="ngForm">
-        <div>
-          <mat-form-field appearance="outline">
-            <mat-label>Todo name</mat-label>
-            <input required minlength="4" name="todoName" [(ngModel)]="selectedTodo.name" matInput placeholder="Todo name" #tbxTodoName="ngModel" [value]="selectedTodo.name">
-            <mat-error *ngIf="tbxTodoName.errors?.required">Please enter a name for the todo</mat-error>
-            <mat-error *ngIf="tbxTodoName.errors?.minlength">Please at least four characters.</mat-error>
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field appearance="outline">
-            <mat-label>Todo description</mat-label>
-            <input name="todoDescription" [(ngModel)]="selectedTodo.description" matInput placeholder="Todo description" #tbxTodoDescription="ngModel" [value]="selectedTodo.description">
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-checkbox name="todoCompleted" [(ngModel)]="selectedTodo.completed" color="primary">is completed ?</mat-checkbox>
-        </div>
-        <div class="todos__details-button-list">
-          <button mat-raised-button (click)="isDetailView = false" *ngIf="detailForm.pristine">Back</button>
-          <button type="button" (click)="update(selectedTodo)" class="todos__update-button" mat-raised-button color="primary" [disabled]="!detailForm.valid || detailForm.pristine">Update</button>
-        </div>
-      </form>
-    </div>
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Todo description</mat-label>
+          <input name="todoDescription" [(ngModel)]="selectedTodo.description" matInput placeholder="Todo description" #tbxTodoDescription="ngModel" [value]="selectedTodo.description">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-checkbox name="todoCompleted" [(ngModel)]="selectedTodo.completed" color="primary">is completed ?</mat-checkbox>
+      </div>
+      <div class="todos__details-button-list">
+        <button mat-raised-button (click)="isDetailView = false" *ngIf="detailForm.pristine">Back</button>
+        <button type="button" (click)="update(selectedTodo)" class="todos__update-button" mat-raised-button color="primary" [disabled]="!detailForm.valid || detailForm.pristine">Update</button>
+      </div>
+    </form>
   </div>
 </div>
+

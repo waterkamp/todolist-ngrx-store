@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EffectsModule } from '@ngrx/effects';
 import { TodoEffects } from './state/effects/todos.effects';
@@ -42,6 +43,7 @@ import { environment } from 'src/environments/environment';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatToolbarModule,
     MatButtonModule,
     MatListModule,
     MatDividerModule,
