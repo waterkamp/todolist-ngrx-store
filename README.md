@@ -4,6 +4,10 @@ This application has been created to show how to implemenet a global state manag
 The application is using NgRx package to achieve this.
 NgRx is an Angular implementation of the redux pattern.
 
+## Features
+- Global state management by Ngrx
+- Components loaded dynamically after selecting a mainmenu item.
+
 
 ## How to run the application
 

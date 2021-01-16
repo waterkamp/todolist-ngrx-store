@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     this.loadComponent(componentKey);
   }
 
-  loadComponent(componentKey: DynamicComponentKeys) {
+  private loadComponent(componentKey: DynamicComponentKeys) {
     const componentToLoad = dynamicComponents.find(dc => dc.key === componentKey)?.component;
 
     const componentFactory = this.componentFactoryResolver
