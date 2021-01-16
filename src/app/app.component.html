@@ -5,7 +5,10 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #mainMenu="matMenu">
-        <button type="button" mat-menu-item>
+        <button type="button" mat-menu-item (click)="onMenuItemClick(dynamicComponentKeys.Todos)">
+          <span>Todos management</span>
+        </button>
+        <button type="button" mat-menu-item (click)="onMenuItemClick(dynamicComponentKeys.Times)">
           <span>Time management</span>
         </button>
       </mat-menu>
@@ -13,7 +16,12 @@
   </mat-toolbar>
   <div class="container" fxLayout="row" fxLayoutAlign="center center">
     <div fxFlex="50%">
-      <app-todos></app-todos>
+
+
+      <ng-template componentsHost></ng-template>
+
+
+
     </div>
   </div>
 

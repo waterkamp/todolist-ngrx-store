@@ -23,6 +23,8 @@ import { StoreModule } from '@ngrx/store';
 import { todosReducer } from './state/reducers/todos.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { TimesComponent } from './times/times.component';
+import { ComponentsHostDirective } from './directives/components-host.directive';
 
 
 
@@ -32,6 +34,8 @@ import { environment } from 'src/environments/environment';
   declarations: [
     AppComponent,
     TodosComponent,
+    TimesComponent,
+    ComponentsHostDirective
   ],
   imports: [
     BrowserModule,
